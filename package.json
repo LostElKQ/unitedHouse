@@ -46,6 +46,7 @@
     "@vitest/browser-playwright": "^5.1.0",
     "auth": "^1.7.15",
     "better-auth": "^1.7.15",
+    "dotenv-expand": "^1000.0.0",
     "drizzle-kit": "^0.31.11",
     "drizzle-orm": "^0.45.4",
     "eslint": "^10.14.0",
