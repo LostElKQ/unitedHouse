@@ -14,5 +14,5 @@
   "[svelte]": {
     "editor.defaultFormatter": "svelte.svelte-vscode"
   },
-  "conventionalCommits.scopes": ["environment"]
+  "conventionalCommits.scopes": ["environment", "api"]
 }

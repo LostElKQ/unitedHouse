@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "svelte": {
+      "serverUrl": "https://mcp.svelte.dev/mcp"
+    },
+    "better-auth": {
+      "serverUrl": "https://mcp.better-auth.com/mcp"
+    }
+  }
+}
