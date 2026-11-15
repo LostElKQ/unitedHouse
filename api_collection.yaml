@@ -1,0 +1,150 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: API Collection
+meta:
+  id: wrk_8b6f4dda9535470bb2ffa5297baa727e
+  created: 1794687172678
+  modified: 1794687172678
+  description: ""
+collection:
+  - name: Users
+    meta:
+      id: fld_faec0faa554649aaa015a9549a39e6a9
+      created: 1794687183001
+      modified: 1794687183001
+      sortKey: -1794687183001
+      description: ""
+    children:
+      - url: "{{ _.origin }}/api/users"
+        name: Список пользователей
+        meta:
+          id: req_4f466a0cceda4205adc2888bcc48c28f
+          created: 1794687264685
+          modified: 1794708930834
+          isPrivate: false
+          description: ""
+          sortKey: -1794687264685
+        method: GET
+        parameters:
+          - name: status
+            value: rejected
+            description: ""
+            disabled: true
+            type: text
+            multiline: false
+          - name: role
+            value: executor
+            description: ""
+            disabled: true
+            type: text
+            multiline: false
+          - name: page
+            value: "-1"
+            description: ""
+            disabled: false
+          - name: pageSize
+            value: "5"
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Auth
+    meta:
+      id: fld_dd39d9032cda45bc81473def1383fdb2
+      created: 1794687206299
+      modified: 1794687247609
+      sortKey: -1794687183101
+      description: ""
+    children:
+      - url: "{{ _.origin }}/demo/better-auth/login?/signInEmail"
+        name: Вход в систему
+        meta:
+          id: req_4f41e0b7b7854ebb8697458942a42b0c
+          created: 1794687385478
+          modified: 1794698567157
+          isPrivate: false
+          description: ""
+          sortKey: -1794687385478
+        method: POST
+        body:
+          mimeType: application/x-www-form-urlencoded
+          params:
+            - name: email
+              value: "{{ _.bootstrap_admin_email }}"
+              description: ""
+              disabled: false
+            - name: password
+              value: "{{ _.bootstrap_admin_password }}"
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: application/x-www-form-urlencoded
+          - name: Origin
+            value: "{{ _.origin }}"
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_2c8eefc4e09cbdf8e56c48bd1a5010987f2a284d
+    created: 1794687172684
+    modified: 1794704545989
+  cookies:
+    - id: 1d5a4cb1-afeb-445a-b3fe-27e5cb897972
+      key: better-auth.session_token
+      value: 0AkiO7wcIlS1whmySYrKRUKnfTC2CxYU.niEmlGaaeNKkYMAYmQhZCpHHIo007a95Fs1XprKSR1Y=
+      domain: localhost
+      path: /
+      secure: false
+      httpOnly: true
+      hostOnly: true
+    - id: e2e69cb4-553a-40a6-8a52-872be83ddf8b
+      key: __Secure-better-auth.session_token
+      value: 6cuk7twWmtSuRHMEkkhI8XJFNl0boyeM.AmPoe7mf0QFrznlUW5ENvzAp8nXxKMNXP9fbyNvqCIM=
+      domain: localhost
+      path: /
+      secure: true
+      httpOnly: true
+      hostOnly: true
+environments:
+  name: Development
+  meta:
+    id: env_2c8eefc4e09cbdf8e56c48bd1a5010987f2a284d
+    created: 1794687172683
+    modified: 1794704580187
+    isPrivate: false
+  data:
+    protocol: http
+    host: localhost
+    port: "5173"
+    origin: "{{ _.protocol }}://{{ _.host }}:{{ _.port }}"
+    no_port_origin: "{{ _.protocol }}://{{_.host }}"
+    bootstrap_admin_email: admin@edinyidom.ru
+    bootstrap_admin_password: Password1
+  subEnvironments:
+    - name: Local Prod
+      meta:
+        id: env_20522a3bd1a940fbaf40851098308c16
+        created: 1794693762086
+        modified: 1794698527466
+        isPrivate: false
+        sortKey: 1794693762086
+      data:
+        protocol: https
+        origin: "{{ _.no_port_origin }}"
+      color: "#2b47d4"
