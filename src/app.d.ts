@@ -10,7 +10,10 @@ declare global {
       session?: Session["session"];
     }
 
-    // interface Error {}
+    interface Error {
+      formErrors?: string[];
+      fieldErrors?: Partial<Record<string, string[]>>;
+    }
     // interface PageData {}
     // interface PageState {}
     // interface Platform {}

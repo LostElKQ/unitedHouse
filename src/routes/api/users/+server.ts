@@ -9,13 +9,12 @@ import type { RequestHandler } from "./$types";
 const searchParamsSchema = z.strictObject({
   status: z.enum(["pending", "active", "rejected", "blocked"]).optional(),
   role: z.enum(["resident", "admin", "executor"]).optional(),
-  page: z.coerce.number().min(1).default(1),
-  pageSize: z.coerce.number().min(1).max(40).default(20),
+  page: z.coerce.number().positive().default(1),
+  pageSize: z.coerce.number().positive().max(40).default(20),
 });
 
 export const GET: RequestHandler = async ({ locals: { user }, url }) => {
-  if (!user) return error(401);
-  if (user.role !== "admin") return error(403);
+  if (!user || user.role !== "admin") return error(403);
 
   const { role, page, pageSize, status } = parseSearchParams(url.searchParams, searchParamsSchema);
 

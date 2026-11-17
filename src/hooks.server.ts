@@ -20,8 +20,10 @@ export const handle: Handle = handleBetterAuth;
 
 export const handleError: HandleServerError = async ({ error, kind }) => {
   if (kind === "unknown") {
-    if (error instanceof z.ZodError)
-      return { status: 422, message: "Validation error", errors: z.flattenError(error) };
+    if (error instanceof z.ZodError) {
+      const { formErrors, fieldErrors } = z.flattenError(error);
+      return { status: 422, message: "Validation error", formErrors, fieldErrors };
+    }
     console.error(error);
     return {};
   }
