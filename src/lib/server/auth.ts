@@ -12,6 +12,7 @@ import { BETTER_AUTH_SECRET, ORIGIN } from "$app/env/private";
 import { eq, sql } from "drizzle-orm";
 import { db } from "./db";
 import * as schema from "./db/schema";
+import z from "zod";
 
 const MAX_FAILED_LOGINS = 5; // ФТ-2.3
 const LOCK_MINUTES = 15;
@@ -195,28 +196,35 @@ export const auth = betterAuth({
   plugins: [sveltekitCookies(getRequestEvent)], // должен быть последним
 });
 
+export const createStaffUserSchema = z.strictObject({
+  name: z.string(),
+  email: z.email({ pattern: z.regexes.unicodeEmail }).toLowerCase(),
+  phone: z
+    .string()
+    .regex(/^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/, "Формат номера: '+7 (123) 456-78-90'")
+    .optional(),
+  password: z.string().regex(PASSWORD_RE, "Пароль: не менее 8 символов, буква и цифра"),
+  role: z.enum(["admin", "executor"]),
+});
+
 /**
  * Создание пользователя администратором (ФТ-4.7 — исполнитель)
  * или первого администратора при развёртывании (scripts/create-admin.ts).
  * Пароль временный: при первом входе нужно сменить.
  */
-export async function createStaffUser(input: {
-  name: string;
-  email: string;
-  phone?: string;
-  password: string;
-  role: "admin" | "executor";
-}): ReturnType<Awaited<typeof auth.$context>["internalAdapter"]["createUser"]> {
-  if (!PASSWORD_RE.test(input.password))
-    throw new Error("Пароль: не менее 8 символов, буква и цифра");
+export async function createStaffUser(
+  input: z.input<typeof createStaffUserSchema>,
+): Promise<Session["user"]> {
+  const parsed = createStaffUserSchema.parse(input);
+
   const ctx = await auth.$context;
-  const user = await ctx.internalAdapter.createUser(
+  const user: Session["user"] = await ctx.internalAdapter.createUser(
     {
-      name: input.name,
-      email: input.email.toLowerCase(),
+      name: parsed.name,
+      email: parsed.email,
       emailVerified: false,
-      phone: input.phone ?? null,
-      role: input.role,
+      phone: parsed.phone ?? null,
+      role: parsed.role,
       status: "active",
       mustChangePassword: true,
     },
@@ -226,7 +234,7 @@ export async function createStaffUser(input: {
     userId: user.id,
     providerId: "credential",
     accountId: String(user.id),
-    password: await ctx.password.hash(input.password),
+    password: await ctx.password.hash(parsed.password),
   });
   return user;
 }
