@@ -77,6 +77,10 @@ export const auth = betterAuth({
     enabled: true,
     customRules: {
       "/request-password-reset": { window: 60, max: 1 }, // ФТ-3.3: не чаще раза в минуту
+      // Стандартное правило Better Auth — 3 входа за 10 с с одного IP — срабатывает
+      // раньше блокировки по ФТ-2.3 (5 ошибок → 15 минут) и ломает ПР-2.2.
+      // Перебор паролей по одному email и так ограничен ФТ-2.3.
+      "/sign-in/email": { window: 60, max: 30 },
     },
   },
 

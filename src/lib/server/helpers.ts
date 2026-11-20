@@ -53,6 +53,9 @@ export function checkAuthAccess<const TRoles extends ReadonlyArray<typeof users.
   const { user } = locals;
 
   if (!user) return error(401);
+  // Ожидающий подтверждения, отклонённый или заблокированный пользователь
+  // не получает доступ к данным, даже если сессия ещё жива (ФТ-2.5, ФТ-4.5)
+  if (user.status !== "active") return error(403);
   if (roles && !roles.includes(user.role)) return error(403);
 
   return user;
