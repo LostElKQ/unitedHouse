@@ -113,3 +113,20 @@ export function formatPhoneInput(raw: string): string {
 }
 
 export const PHONE_RE = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
+
+/** Сегодняшняя дата «ГГГГ-ММ-ДД» в часовом поясе ТСЖ */
+export function todayIso(timeZone = DEFAULT_TIMEZONE, now: Date = new Date()): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(now);
+}
+
+/** «ГГГГ-ММ-ДД» ± n дней (без часовых поясов) */
+export function addDays(iso: string, days: number): string {
+  const d = new Date(`${iso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
