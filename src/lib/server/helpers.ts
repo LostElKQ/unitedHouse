@@ -1,4 +1,3 @@
-import { error } from "@sveltejs/kit";
 import type z from "zod";
 
 export function parseRequestBody<T extends z.ZodType>(
@@ -11,17 +10,12 @@ export async function parseRequestBody<T extends z.ZodType>(
   request: Request,
   schema?: T,
 ): Promise<z.core.output<T>> {
-  try {
-    const data = await request.json();
-    if (schema) return schema.parse(data);
-    return data;
-  } catch (e) {
-    if (e instanceof SyntaxError) return error(400);
-    throw e;
-  }
+  const data = await request.json();
+  if (schema) return schema.parse(data);
+  return data;
 }
 
-export function parseSearchParams<T extends z.ZodType>(
+export function parseSearchParams<T extends z.ZodObject>(
   params: URLSearchParams,
   schema: T,
 ): z.core.output<T>;

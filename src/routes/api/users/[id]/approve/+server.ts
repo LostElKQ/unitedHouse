@@ -19,7 +19,7 @@ export const POST: RequestHandler = async ({ locals: { user }, params }) => {
 
   if (!forUpdate) error(404);
   if (forUpdate.status === "active")
-    return error(422, "Validation error", { formErrors: ["Пользователь уже активен"] });
+    return error(400, "Bad request", { formErrors: ["Пользователь уже активен"] });
 
   const [updated] = await db
     .update(users)

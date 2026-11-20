@@ -22,7 +22,7 @@ export const handleError: HandleServerError = async ({ error, kind }) => {
   if (kind === "unknown") {
     if (error instanceof z.ZodError) {
       const { formErrors, fieldErrors } = z.flattenError(error);
-      return { status: 422, message: "Validation error", formErrors, fieldErrors };
+      return { status: 400, message: "Bad request", formErrors, fieldErrors };
     }
     console.error(error);
     return {};
