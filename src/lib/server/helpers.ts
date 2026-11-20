@@ -1,3 +1,6 @@
+import type { Session } from "#lib/server/auth.js";
+import type { users } from "#lib/server/db/schema.js";
+import { error } from "@sveltejs/kit";
 import type z from "zod";
 
 export function parseRequestBody<T extends z.ZodType>(
@@ -35,4 +38,22 @@ export function parseSearchParams<T extends z.ZodType>(
     }, {});
   if (schema) return schema.parse(paramsObject);
   return paramsObject;
+}
+
+type NoDup<T extends readonly unknown[]> = T extends readonly [infer H, ...infer R]
+  ? H extends R[number]
+    ? never
+    : [H, ...NoDup<R>]
+  : T;
+
+export function checkAuthAccess<const TRoles extends ReadonlyArray<typeof users.$inferSelect.role>>(
+  locals: App.Locals,
+  roles?: NoDup<TRoles> extends never ? never : TRoles,
+): Session["user"] & { role: TRoles[number] } {
+  const { user } = locals;
+
+  if (!user) return error(401);
+  if (roles && !roles.includes(user.role)) return error(403);
+
+  return user;
 }

@@ -1,7 +1,6 @@
 import { db } from "#lib/server/db/index.js";
 import { apartments, users } from "#lib/server/db/schema.js";
-import { parseSearchParams } from "#lib/server/helpers.js";
-import { error } from "@sveltejs/kit";
+import { checkAuthAccess, parseSearchParams } from "#lib/server/helpers.js";
 import { and, eq, type SQL } from "drizzle-orm";
 import z from "zod";
 import type { RequestHandler } from "./$types";
@@ -13,8 +12,8 @@ const searchParamsSchema = z.strictObject({
   pageSize: z.coerce.number().positive().max(40).default(20),
 });
 
-export const GET: RequestHandler = async ({ locals: { user }, url }) => {
-  if (!user || user.role !== "admin") return error(403);
+export const GET: RequestHandler = async ({ locals, url }) => {
+  checkAuthAccess(locals, ["admin"]);
 
   const { role, page, pageSize, status } = parseSearchParams(url.searchParams, searchParamsSchema);
 

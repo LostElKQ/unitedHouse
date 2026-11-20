@@ -40,13 +40,13 @@ export const auth = betterAuth({
       pdConsentAt: { type: "date", required: false, input: true },
       role: {
         type: ["resident", "admin", "executor"],
-        required: false,
+        required: true,
         input: false,
         defaultValue: "resident",
       },
       status: {
         type: ["pending", "active", "rejected", "blocked"],
-        required: false,
+        required: true,
         input: false,
         defaultValue: "pending",
       },

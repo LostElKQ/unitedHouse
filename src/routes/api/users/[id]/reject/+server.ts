@@ -1,6 +1,6 @@
 import { db } from "#lib/server/db/index.js";
 import { users } from "#lib/server/db/schema.js";
-import { parseRequestBody } from "#lib/server/helpers.js";
+import { checkAuthAccess, parseRequestBody } from "#lib/server/helpers.js";
 import { error } from "@sveltejs/kit";
 import { eq } from "drizzle-orm";
 import z from "zod";
@@ -9,8 +9,8 @@ import type { RequestHandler } from "./$types";
 const idSchema = z.coerce.number().positive();
 const requestSchema = z.strictObject({ reason: z.string().nonempty() });
 
-export const POST: RequestHandler = async ({ locals: { user }, params, request }) => {
-  if (!user || user.role !== "admin") return error(403);
+export const POST: RequestHandler = async ({ locals, params, request }) => {
+  checkAuthAccess(locals, ["admin"]);
 
   const id = idSchema.parse(params.id);
   const { reason } = await parseRequestBody(request, requestSchema);
