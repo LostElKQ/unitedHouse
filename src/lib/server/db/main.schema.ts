@@ -352,6 +352,8 @@ export const works = pgTable(
     category: category("category").notNull(),
     location: workLocation("location").notNull(),
     locationDetail: varchar("location_detail", { length: 100 }),
+    // Номер подъезда для места «Подъезд» — фильтр «Мой подъезд» (ФТ-17.3)
+    entrance: smallint("entrance"),
     workDate: date("work_date").notNull(),
     timeStart: time("time_start"),
     timeEnd: time("time_end"),
@@ -379,6 +381,10 @@ export const works = pgTable(
     ),
     check("works_executor_or_contractor", sql`${t.executorId} IS NULL OR ${t.contractor} IS NULL`),
     check("works_priority_only_unplanned", sql`${t.type} = 'unplanned' OR ${t.priority} IS NULL`),
+    check(
+      "works_entrance",
+      sql`${t.entrance} IS NULL OR (${t.location} = 'entrance' AND ${t.entrance} >= 1)`,
+    ),
     // ФТ-16.5: «Выполнена» только с отчётом и датой
     check(
       "works_done_has_report",

@@ -26,8 +26,9 @@ RUN npm prune --omit=dev
 FROM base AS runner
 ENV NODE_ENV=production
 
-# Create non-root user
-RUN addgroup -S -g 1001 sveltekit && adduser -S -u 1001 -G sveltekit sveltekit
+# Create non-root user and the folder for uploaded photos
+RUN addgroup -S -g 1001 sveltekit && adduser -S -u 1001 -G sveltekit sveltekit \
+    && mkdir -p /app/uploads && chown sveltekit:sveltekit /app/uploads
 
 # Copy the built application
 COPY --from=builder --chown=sveltekit:sveltekit /app/build ./build

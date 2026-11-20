@@ -1,1 +1,49 @@
 @import "tailwindcss";
+
+/* ---------------------------------------------------------------------
+ * Тема «Единый дом» — СТ v1.0, раздел 5.1
+ * Нейтральная графитово-серая гамма; яркие цвета — только для статусов.
+ * Пары «фон / текст» статусов подобраны с контрастом не ниже 4,5:1.
+ * ------------------------------------------------------------------- */
+@theme {
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Rubik", "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+
+  /* Основная палитра */
+  --color-graphite: #2b2f2e; /* шапка, основные кнопки */
+  --color-graphite-hover: #3d4241;
+  --color-page: #f3f4f2; /* фон страниц */
+  --color-surface: #ffffff; /* карточки и формы */
+  --color-line: #daddd8; /* рамки */
+  --color-muted: #6b6f6d; /* второстепенный текст */
+  --color-ink: #1c1f1e; /* основной текст */
+
+  /* Статусы: *-bg — фон бейджа, *-fg — текст и иконка */
+  --color-neutral-bg: #ecedea;
+  --color-neutral-fg: #474b49;
+  --color-info-bg: #e3edfb;
+  --color-info-fg: #1d4f9c;
+  --color-success-bg: #e2f2e6;
+  --color-success-fg: #1c6634;
+  --color-warning-bg: #fcefdc;
+  --color-warning-fg: #8f4500;
+  --color-danger-bg: #fbe6e4;
+  --color-danger-fg: #b0261b;
+}
+
+@layer base {
+  html {
+    @apply bg-page font-sans text-base text-ink antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-heading text-ink;
+  }
+
+  /* Видимый фокус для работы с клавиатуры (СТ 5.1, «Доступность») */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-graphite;
+  }
+}

@@ -5,4 +5,5 @@ import { DATABASE_URL } from "$app/env/private";
 
 const client = postgres(DATABASE_URL);
 
-export const db = drizzle(client, { schema });
+export const db = drizzle(client, { schema, logger: import.meta.env.DEV });
+export { schema };

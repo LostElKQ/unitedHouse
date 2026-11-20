@@ -28,6 +28,9 @@ services:
       DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@db/${DATABASE_NAME}
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
       ORIGIN: https://localhost
+      UPLOAD_DIR: /app/uploads
+    volumes:
+      - uploads:/app/uploads # фото заявок и отчётов (СТ 4.4)
     restart: always
 
     depends_on:
@@ -51,6 +54,7 @@ services:
 
 volumes:
   pgdata:
+  uploads:
 
 networks:
   united_house_net:

@@ -22,6 +22,20 @@
       "when": 1793787315257,
       "tag": "0002_seed",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1795193936881,
+      "tag": "0003_allow_admin_apartment",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795196183649,
+      "tag": "0004_works_entrance",
+      "breakpoints": true
     }
   ]
 }

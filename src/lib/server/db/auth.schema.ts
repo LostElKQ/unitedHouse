@@ -50,10 +50,12 @@ export const users = pgTable(
     index("users_apartment_idx").on(t.apartmentId),
     index("users_status_idx").on(t.status),
     check("users_phone_format", sql`${t.phone} ~ '^\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}$'`),
-    // у жителя обязательно есть квартира, у админа и исполнителя — нет
+    // у жителя обязательно есть квартира, у исполнителя — нет.
+    // Администратор может жить в доме (ФТ-4.6: роль назначается жителю),
+    // поэтому квартира у него допустима.
     check(
       "users_resident_has_apartment",
-      sql`(${t.role} = 'resident') = (${t.apartmentId} IS NOT NULL)`,
+      sql`(${t.role} <> 'resident' OR ${t.apartmentId} IS NOT NULL) AND (${t.role} <> 'executor' OR ${t.apartmentId} IS NULL)`,
     ),
     check(
       "users_rejection_reason",
