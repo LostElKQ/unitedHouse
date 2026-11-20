@@ -11,6 +11,7 @@
 //     users: await api.get<UsersPage>("/api/users", { fetch, query: { status: "pending" } }),
 //   });
 // =====================================================================
+import { error as httpError, redirect } from "@sveltejs/kit";
 
 export type FieldErrors = Partial<Record<string, string[]>>;
 
@@ -107,12 +108,19 @@ async function request<T>(
       formErrors?: string[];
       fieldErrors?: FieldErrors;
     };
-    throw new ApiError(
+    const apiError = new ApiError(
       response.status,
       err.message ?? response.statusText,
       err.formErrors ?? [],
       err.fieldErrors ?? {},
     );
+    // Внутри load (передан fetch из load) превращаем ошибку в ошибку
+    // страницы SvelteKit: 401 → на вход, остальное → +error.svelte с кодом
+    if (options.fetch) {
+      if (response.status === 401) redirect(303, "/login");
+      httpError(response.status, apiError.userMessage);
+    }
+    throw apiError;
   }
 
   return data as T;

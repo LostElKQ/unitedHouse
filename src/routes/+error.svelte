@@ -20,6 +20,8 @@
   <h1 class="text-2xl font-medium">{title}</h1>
   {#if page.status >= 500}
     <p class="text-muted">Попробуйте обновить страницу через минуту.</p>
+  {:else if page.status === 403}
+    <p class="text-muted">Эта страница вам недоступна.</p>
   {/if}
   <Button href={resolve("/(resident)")}>На главную</Button>
 </main>
