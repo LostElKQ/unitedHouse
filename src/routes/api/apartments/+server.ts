@@ -26,13 +26,14 @@ export const GET: RequestHandler = async ({ locals, url }) => {
       accountNumber: apartments.accountNumber,
       initialCold: apartments.initialCold,
       initialHot: apartments.initialHot,
+      // Имя таблицы — явно: Drizzle опускает его в запросе к одной таблице
       residents: sql<ApartmentRow["residents"]>`coalesce((
         select json_agg(json_build_object('id', u.id, 'name', u.full_name, 'status', u.status) order by u.full_name)
-        from users u where u.apartment_id = ${apartments.id} and u.status in ('active', 'pending', 'blocked')
+        from users u where u.apartment_id = "apartments"."id" and u.status in ('active', 'pending', 'blocked')
       ), '[]'::json)`,
       hasData: sql<boolean>`(
-        exists(select 1 from meter_readings r where r.apartment_id = ${apartments.id})
-        or exists(select 1 from charges c where c.apartment_id = ${apartments.id})
+        exists(select 1 from meter_readings r where r.apartment_id = "apartments"."id")
+        or exists(select 1 from charges c where c.apartment_id = "apartments"."id")
       )`,
     })
     .from(apartments)

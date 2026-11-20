@@ -72,7 +72,7 @@
   </Card>
 {:else}
   <Card>
-    <form class="flex flex-col gap-4" novalidate onsubmit={submit}>
+    <form class="flex flex-col gap-4" method="POST" novalidate onsubmit={submit}>
       <Field error={errors["name"]} hint="Например: Иванов Иван Иванович" label="ФИО" required>
         {#snippet children(attrs)}
           <input {...attrs} class={inputClass} autocomplete="name" bind:value={form.name} />

@@ -71,7 +71,7 @@
 <PageHeader title="Вход" />
 
 <Card>
-  <form class="flex flex-col gap-4" novalidate onsubmit={submit}>
+  <form class="flex flex-col gap-4" method="POST" novalidate onsubmit={submit}>
     <Field error={errors["email"]} label="Email" required>
       {#snippet children(attrs)}
         <input

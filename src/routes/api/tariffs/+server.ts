@@ -20,7 +20,9 @@ export const GET: RequestHandler = async ({ locals }) => {
       rate: tariffs.rate,
       validFrom: tariffs.validFrom,
       validTo: tariffs.validTo,
-      used: sql<boolean>`exists(select 1 from charge_lines l where l.tariff_id = ${tariffs.id})`,
+      // Имя таблицы пишем явно: в запросе к одной таблице Drizzle опускает его,
+      // и во вложенном подзапросе "id" указывал бы на charge_lines.id
+      used: sql<boolean>`exists(select 1 from charge_lines l where l.tariff_id = "tariffs"."id")`,
     })
     .from(tariffs)
     .orderBy(asc(tariffs.id));
