@@ -258,6 +258,10 @@ export const workSchema = z
     category: categorySchema,
     location: z.enum(["whole_house", "entrance", "yard", "basement", "roof", "other"]),
     locationDetail: optionalText(100),
+    entrance: z
+      .union([z.coerce.number().int().min(1), z.literal(""), z.null()])
+      .optional()
+      .transform((v) => (typeof v === "number" ? v : undefined)),
     workDate: isoDate,
     timeStart: timeOrEmpty,
     timeEnd: timeOrEmpty,
@@ -283,6 +287,8 @@ export const workSchema = z
         path: ["timeEnd"],
         message: "Окончание должно быть позже начала",
       });
+    if (d.location === "entrance" && !d.entrance)
+      ctx.addIssue({ code: "custom", path: ["entrance"], message: "Укажите подъезд" });
     if (d.executorId && d.contractor)
       ctx.addIssue({
         code: "custom",
@@ -290,7 +296,11 @@ export const workSchema = z
         message: "Укажите либо исполнителя, либо подрядчика",
       });
   })
-  .transform((d) => ({ ...d, priority: d.type === "unplanned" ? d.priority : undefined }));
+  .transform((d) => ({
+    ...d,
+    priority: d.type === "unplanned" ? d.priority : undefined,
+    entrance: d.location === "entrance" ? d.entrance : undefined,
+  }));
 export type WorkInput = z.input<typeof workSchema>;
 
 export const rescheduleSchema = z.strictObject({

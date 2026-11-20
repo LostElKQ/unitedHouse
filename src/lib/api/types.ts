@@ -27,6 +27,7 @@ export type PublicSettings = {
   timezone: string;
   readingsStartDay: number;
   readingsEndDay: number;
+  entrances: number[];
 };
 
 // --- 3.4 Пользователи ----------------------------------------------------
@@ -221,6 +222,7 @@ export type WorkItem = {
   category: Category;
   location: WorkLocation;
   locationDetail: string | null;
+  entrance: number | null;
   workDate: string;
   timeStart: string | null;
   timeEnd: string | null;
@@ -240,5 +242,20 @@ export type WorkDetail = WorkItem & {
   report: string | null;
   completedOn: string | null;
   reschedules: Array<{ oldDate: string; newDate: string; reason: string; createdAt: string }>;
+  /** Фото отчёта о выполнении (ФТ-16.5) */
   photos: Attachment[];
+  /** Фото из связанной заявки — для администратора и исполнителя (ФТ-18.2) */
+  requestPhotos: Attachment[];
+};
+
+/** Открытая заявка для привязки к работе (ФТ-16.1) */
+export type OpenRequest = {
+  id: number;
+  number: number;
+  category: Category;
+  location: RequestLocation;
+  locationDetail: string | null;
+  description: string;
+  apartmentNumber: string;
+  priority: Priority;
 };

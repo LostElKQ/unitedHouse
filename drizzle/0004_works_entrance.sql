@@ -1,0 +1,2 @@
+ALTER TABLE "works" ADD COLUMN "entrance" smallint;--> statement-breakpoint
+ALTER TABLE "works" ADD CONSTRAINT "works_entrance" CHECK ("works"."entrance" IS NULL OR ("works"."location" = 'entrance' AND "works"."entrance" >= 1));

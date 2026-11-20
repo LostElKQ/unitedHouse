@@ -91,3 +91,9 @@ export function isActive(item: NavItem, pathname: string): boolean {
   if (item.exact) return pathname === path;
   return pathname === path || pathname.startsWith(`${path}/`);
 }
+
+/** Ссылка на маршрут с параметрами поиска: routeWithQuery("/admin/schedule", "view=month") */
+export function routeWithQuery(route: RouteId, query: string): ResolvedPathname {
+  const base = routeHref(route);
+  return (query ? `${base}?${query}` : base) as ResolvedPathname;
+}
