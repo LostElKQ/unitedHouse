@@ -1,0 +1,2 @@
+ALTER TABLE "users" DROP CONSTRAINT "users_resident_has_apartment";--> statement-breakpoint
+ALTER TABLE "users" ADD CONSTRAINT "users_resident_has_apartment" CHECK (("users"."role" <> 'resident' OR "users"."apartment_id" IS NOT NULL) AND ("users"."role" <> 'executor' OR "users"."apartment_id" IS NULL));

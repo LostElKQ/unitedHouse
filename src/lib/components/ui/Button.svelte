@@ -15,7 +15,7 @@
   import { LoaderCircle } from "@lucide/svelte";
 
   type Variant = "primary" | "secondary" | "danger" | "ghost";
-  type Size = "md" | "lg";
+  type Size = "sm" | "md" | "lg";
 
   type Common = {
     variant?: Variant;
@@ -48,13 +48,14 @@
   };
 
   const sizes: Record<Size, string> = {
+    sm: "min-h-9 px-3 text-sm",
     md: "min-h-10 px-4 text-base",
     lg: "min-h-14 px-6 text-lg", // крупные кнопки исполнителя (ФТ-18.6)
   };
 
   let classes = $derived(
     [
-      "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors",
+      "inline-flex items-center justify-center gap-2 rounded-lg font-medium whitespace-nowrap transition-colors",
       "disabled:cursor-not-allowed disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50",
       variants[variant],
       sizes[size],

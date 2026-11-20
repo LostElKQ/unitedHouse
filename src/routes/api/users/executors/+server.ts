@@ -1,9 +1,9 @@
 import { createStaffUser, createStaffUserSchema } from "#lib/server/auth.js";
+import { audit, badRequest } from "#lib/server/api-helpers.js";
 import { db } from "#lib/server/db/index.js";
 import { users } from "#lib/server/db/schema.js";
 import { checkAuthAccess, parseRequestBody } from "#lib/server/helpers.js";
-import { error } from "@sveltejs/kit";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import z from "zod";
 import type { RequestHandler } from "./$types";
 
@@ -12,14 +12,15 @@ const { role: _, ...schemaShape } = createStaffUserSchema.shape;
 const requestSchema = z.strictObject(schemaShape);
 
 export const POST: RequestHandler = async ({ locals, request }) => {
-  checkAuthAccess(locals, ["admin"]);
+  const admin = checkAuthAccess(locals, ["admin"]);
 
   const requestData = await parseRequestBody(request, requestSchema);
 
-  if ((await db.$count(users, eq(users.email, requestData.email))) >= 1)
-    return error(409, "Conflict");
+  if ((await db.$count(users, eq(sql`lower(${users.email})`, requestData.email))) >= 1)
+    badRequest({ email: ["Пользователь с таким email уже существует"] }, [], 409);
 
   const executor = await createStaffUser({ ...requestData, role: "executor" });
+  await audit(Number(admin.id), "user.create_executor", "user", Number(executor.id));
 
   return Response.json({
     id: executor.id,

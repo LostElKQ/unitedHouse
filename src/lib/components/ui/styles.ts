@@ -7,3 +7,11 @@ export const inputClass =
   "disabled:bg-page disabled:text-muted aria-invalid:border-danger-fg aria-invalid:ring-danger-fg/20";
 
 export const checkboxClass = "size-5 shrink-0 rounded border-line accent-graphite";
+
+// Таблицы (на компьютере). На телефоне те же данные выводятся карточками.
+export const tableClass = "hidden w-full border-collapse text-left md:table";
+export const thClass =
+  "border-b border-line px-3 py-2 text-sm font-medium whitespace-nowrap text-muted first:pl-0 last:pr-0";
+export const tdClass = "border-b border-line px-3 py-3 align-top first:pl-0 last:pr-0";
+/** Список карточек вместо таблицы на узком экране */
+export const mobileListClass = "flex flex-col divide-y divide-line md:hidden";
