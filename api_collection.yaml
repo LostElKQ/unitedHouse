@@ -20,7 +20,7 @@ collection:
         meta:
           id: req_4f466a0cceda4205adc2888bcc48c28f
           created: 1794687264685
-          modified: 1794708930834
+          modified: 1794914667980
           isPrivate: false
           description: ""
           sortKey: -1794687264685
@@ -39,13 +39,154 @@ collection:
             type: text
             multiline: false
           - name: page
-            value: "-1"
+            value: "1"
             description: ""
             disabled: false
           - name: pageSize
-            value: "5"
+            value: "40"
             description: ""
             disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.origin }}/api/users/:id/approve"
+        name: Подтверждение регистрации жителя
+        meta:
+          id: req_c994b0234d7442b7b6f7992d73d49a58
+          created: 1794758018584
+          modified: 1794892680162
+          isPrivate: false
+          description: ""
+          sortKey: -1794758018584
+        method: POST
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: -20a
+      - url: "{{ _.origin }}/api/users/:id/reject"
+        name: Отклонение регистрации жителя
+        meta:
+          id: req_23bba657cb744172b67c777104211442
+          created: 1794762856917
+          modified: 1794763033813
+          isPrivate: false
+          description: ""
+          sortKey: -1794762856917
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "reason": "Не подтверждено право собственности на квартиру 42"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "13"
+      - url: "{{ _.origin }}/api/users/:id/status"
+        name: Блокировка / разблокировка пользователя
+        meta:
+          id: req_0013d1ed461148e6a68d4779c5e43406
+          created: 1794910155812
+          modified: 1794910514871
+          isPrivate: false
+          description: ""
+          sortKey: -1794910155812
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "status": "blocked"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "1"
+      - url: "{{ _.origin }}/api/users/:id/role"
+        name: Назначение / снятие роли администратора
+        meta:
+          id: req_efd13937195b4c9c9c2eeef7aac00cae
+          created: 1794910545582
+          modified: 1794910623316
+          isPrivate: false
+          description: ""
+          sortKey: -1794910545582
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "role": "resident"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "1"
+      - url: "{{ _.origin }}/api/users/executors"
+        name: Создание учётной записи исполнителя
+        meta:
+          id: req_0cd02f18bae349fc8610accf5205fc65
+          created: 1794911587391
+          modified: 1795152897178
+          isPrivate: false
+          description: ""
+          sortKey: -1794911587391
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Петров Петр Петрович",
+              "email": "petrov@tsj.local",
+              "phone": "+7 (999) 765-43-21",
+              "password": "TempPassword123"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -103,22 +244,38 @@ cookieJar:
   meta:
     id: jar_2c8eefc4e09cbdf8e56c48bd1a5010987f2a284d
     created: 1794687172684
-    modified: 1794704545989
+    modified: 1795151119619
   cookies:
-    - id: 1d5a4cb1-afeb-445a-b3fe-27e5cb897972
-      key: better-auth.session_token
-      value: 0AkiO7wcIlS1whmySYrKRUKnfTC2CxYU.niEmlGaaeNKkYMAYmQhZCpHHIo007a95Fs1XprKSR1Y=
-      domain: localhost
-      path: /
-      secure: false
-      httpOnly: true
-      hostOnly: true
     - id: e2e69cb4-553a-40a6-8a52-872be83ddf8b
       key: __Secure-better-auth.session_token
       value: 6cuk7twWmtSuRHMEkkhI8XJFNl0boyeM.AmPoe7mf0QFrznlUW5ENvzAp8nXxKMNXP9fbyNvqCIM=
       domain: localhost
       path: /
       secure: true
+      httpOnly: true
+      hostOnly: true
+    - id: 1d5a4cb1-afeb-445a-b3fe-27e5cb897972
+      key: better-auth.session_token
+      value: Rdq6LYToY9cgwO8Jcnvl0KSMMoSbAon3.ukjmd8PIq/NlTTH+i/UcUXWmfd5VD92mm/lo8YzExjY=
+      domain: localhost
+      path: /
+      secure: false
+      httpOnly: true
+      hostOnly: true
+    - id: bc49ad4f-59b6-4df5-b181-220a42551421
+      key: better-auth.session_data
+      value: ""
+      domain: localhost
+      path: /
+      secure: false
+      httpOnly: true
+      hostOnly: true
+    - id: d8502bd2-99f7-4f4f-96f0-664f2a665c4e
+      key: better-auth.dont_remember
+      value: ""
+      domain: localhost
+      path: /
+      secure: false
       httpOnly: true
       hostOnly: true
 environments:
