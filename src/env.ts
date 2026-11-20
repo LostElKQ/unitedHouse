@@ -15,4 +15,8 @@ export const variables = defineEnvVars({
   ORIGIN: {
     description: "Application address, for example `http://localhost:5173`.",
   },
+  UPLOAD_DIR: {
+    description: "Folder for photos of requests and work reports (default: ./uploads)",
+    schema: z.string().default("uploads"),
+  },
 });
